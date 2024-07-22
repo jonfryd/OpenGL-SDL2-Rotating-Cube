@@ -276,12 +276,18 @@ int main(int argc, char* argv[]) {
 
     float shakeAmplitude = 0.0;
 
+    // Desired frame rate
+    const int targetFPS = 100;
+    const int frameDelay = 1000 / targetFPS;
+
     // Main loop
     bool running = true;
     bool autoRotation = true;
 
     SDL_Event event;
     while (running) {
+        Uint32 frameStart = SDL_GetTicks();
+
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT || (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE)) {
                 running = false;
@@ -369,6 +375,14 @@ int main(int argc, char* argv[]) {
 
         // Swap buffers
         SDL_GL_SwapWindow(window);
+
+        // Calculate the duration of the frame
+        Uint32 frameTime = SDL_GetTicks() - frameStart;
+
+        // If the frame took less time than the target frame delay, wait the remaining time
+        if (frameDelay > frameTime) {
+            SDL_Delay(frameDelay - frameTime);
+        }
 
         // Update the previous time and rotation axis for the next frame
         prevTimeValue = timeValue;
