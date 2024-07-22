@@ -64,9 +64,7 @@ const GLchar* fragmentSource = R"glsl(
         vec3 result = (ambient + diffuse) * fragColor + specular;
         color = vec4(0.7 * result, 1.0);
 
-        //color = vec4(0.7 * fragColor, 1.0);
         color += 0.04 * vec4(cos(FragPos.x + u_time * 7.2315 * FragPos.z), (sin(FragPos.z * 10 * cos(FragPos.x * u_time * 2.3))), (sin(u_time * 0.23 + FragPos.x * 1.2) * cos(FragPos.y * 0.53) * sin(FragPos.z * 2.53)), 0.1) * 1.0;
-        //color += fragColor;
     }
 )glsl";
 
@@ -282,8 +280,6 @@ int main(int argc, char* argv[]) {
         float timeValue = elapsed.count(); // Get the elapsed time in seconds
 
         // Update the model matrix to rotate the cube
-        //model = glm::rotate(glm::mat4(1.0f), glm::radians(timeValue * 100.0f), glm::vec3(0.5f, 1.0f, 0.0f)); // Rotate 50 degrees per second
-        //mvp = projection * view * model;
         model = glm::rotate(glm::mat4(1.0f), glm::radians(timeValue * 50.0f), glm::vec3(sin(timeValue * 0.1) * 1.0f, cos(timeValue * 0.4) * 1.0f, cos(timeValue * 2.2) * 1.0f));
         glm::mat4 mvp = projection * view * model;
         glm::mat3 normalMatrix = glm::transpose(glm::inverse(glm::mat3(model)));
@@ -299,12 +295,6 @@ int main(int argc, char* argv[]) {
         glUniformMatrix4fv(mvpLocation, 1, GL_FALSE, glm::value_ptr(mvp));
 
         // Set light and view positions
-/*
-        glUniform3fv(lightPosLoc, 1, glm::value_ptr(lightPos));
-        glUniform3fv(viewPosLoc, 1, glm::value_ptr(viewPos));
-        glUniform3fv(lightColorLoc, 1, glm::value_ptr(glm::vec3(1.0f, 1.0f, 1.0f)));
-        glUniform3fv(objectColorLoc, 1, glm::value_ptr(glm::vec3(1.0f, 0.5f, 0.31f)));
-*/
         glUniform3fv(lightPosLoc, 1, glm::value_ptr(lightPos));
         glUniform3fv(viewPosLoc, 1, glm::value_ptr(viewPos));
         glUniform3fv(lightColorLoc, 1, glm::value_ptr(glm::vec3(1.0f, 1.0f, 1.0f)));
