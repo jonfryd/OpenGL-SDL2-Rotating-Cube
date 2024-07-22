@@ -1,2 +1,43 @@
 # OpenGL-SDL2-Rotating-Cube
-Rotating 3D cube with specular lighting and fragment shading using OpenGL and SDL2
+
+A simple OpenGL and SDL2 project that renders a 3D rotating cube with specular lighting. Each face of the cube is uniquely colored, and the cube rotates continuously, demonstrating basic 3D graphics techniques including transformations, lighting, and shading.
+
+## Prerequisites
+
+- **SDL2**: Simple DirectMedia Layer library for handling window creation and input.
+- **GLEW**: OpenGL Extension Wrangler Library to manage OpenGL extensions.
+- **GLM**: OpenGL Mathematics library for handling matrix and vector operations.
+
+## Installation
+
+1. **Install Dependencies**:
+    - On macOS:
+        ```sh
+        brew install sdl2 glew glm
+        ```
+    - On Linux (Ubuntu):
+        ```sh
+        sudo apt-get install libsdl2-dev libglew-dev libglm-dev
+        ```
+
+2. **Clone the Repository**:
+    ```sh
+    git clone https://github.com/jonfryd/OpenGL-SDL2-Rotating-Cube.git
+    cd OpenGL-SDL2-Rotating-Cube
+    ```
+
+## Building the Project
+
+1. **Compile the Project**:
+    ```sh
+    g++ -o rotating_cube rotating_cube.cpp -lSDL2 -lGLEW -lGL -lGLU
+    ```
+
+2. **Run the Executable**:
+    ```sh
+    ./rotating_cube
+    ```
+
+## Usage
+
+Run the compiled executable to see the continuously rotating cube with specular lighting.
