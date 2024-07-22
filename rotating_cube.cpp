@@ -291,10 +291,7 @@ int main(int argc, char* argv[]) {
         glm::vec3 rotationSpeed = rotationAxis - prevRotationAxis;
 
         // Calculate shake amplitude based on rotation speed
-        float shakeAmplitude = std::min(0.1f, 40.0f * glm::length(rotationSpeed)); // Adjust the amplitude for the desired shake effect
-        //float shakeX = shakeAmplitude * sin(timeValue * 110.33) * glm::length(rotationSpeed);
-        //float shakeY = shakeAmplitude * cos(timeValue * 101.91) * glm::length(rotationSpeed);
-        //float shakeZ = shakeAmplitude * sin(timeValue * 123.451) * glm::length(rotationSpeed);
+        float shakeAmplitude = std::min(0.1f, 0.02f * glm::length(rotationSpeed) / (timeValue - prevTimeValue));
         float shakeX = shakeAmplitude * glm::perlin(glm::vec3(timeValue * 80.1f, timeValue * 30.1f, timeValue * 80.4f));
         float shakeY = shakeAmplitude * glm::perlin(glm::vec3(timeValue * 70.1f, timeValue * 20.2f, timeValue * 70.5f));
         float shakeZ = shakeAmplitude * glm::perlin(glm::vec3(timeValue * 60.1f, timeValue * 52.3f, timeValue * 90.6f));
