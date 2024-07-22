@@ -300,12 +300,12 @@ int main(int argc, char* argv[]) {
                 }
 
                 float xoffset = mouseX - lastMouseX;
-                float yoffset = mouseY - lastMouseY; // Reversed since y-coordinates go from bottom to top
+                float yoffset = mouseY - lastMouseY;
 
                 lastMouseX = mouseX;
                 lastMouseY = mouseY;
 
-                float sensitivity = 0.5f; // Adjust this value as needed
+                const float sensitivity = 0.5f;
                 xoffset *= sensitivity;
                 yoffset *= sensitivity;
 
