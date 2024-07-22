@@ -267,7 +267,14 @@ int main(int argc, char* argv[]) {
     auto startTime = std::chrono::high_resolution_clock::now();
 
     float prevTimeValue = 0.0f;
-    glm::vec3 prevRotationAxis(sin(prevTimeValue * 0.1f) * 1.0f, cos(prevTimeValue * 0.4f) * 1.0f, cos(prevTimeValue * 2.2f) * 1.0f);
+    glm::mat4 prevRotation = glm::mat4(1.0f);
+
+    float rotationX = 0.0f;
+    float rotationY = 0.0f;
+    int lastMouseX, lastMouseY;
+    bool firstMouse = true;
+
+    float shakeAmplitude = 0.0;
 
     // Main loop
     bool running = true;
@@ -277,6 +284,30 @@ int main(int argc, char* argv[]) {
             if (event.type == SDL_QUIT || (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE)) {
                 running = false;
             }
+
+            if (event.type == SDL_MOUSEMOTION) {
+                int mouseX = event.motion.x;
+                int mouseY = event.motion.y;
+
+                if (firstMouse) {
+                    lastMouseX = mouseX;
+                    lastMouseY = mouseY;
+                    firstMouse = false;
+                }
+
+                float xoffset = mouseX - lastMouseX;
+                float yoffset = mouseY - lastMouseY; // Reversed since y-coordinates go from bottom to top
+
+                lastMouseX = mouseX;
+                lastMouseY = mouseY;
+
+                float sensitivity = 0.5f; // Adjust this value as needed
+                xoffset *= sensitivity;
+                yoffset *= sensitivity;
+
+                rotationX += yoffset;
+                rotationY += xoffset;
+            }
         }
 
         // Calculate the elapsed time
@@ -284,21 +315,22 @@ int main(int argc, char* argv[]) {
         std::chrono::duration<float> elapsed = currentTime - startTime;
         float timeValue = elapsed.count(); // Get the elapsed time in seconds
 
-        // Calculate the current rotation axis
-        glm::vec3 rotationAxis(sin(timeValue * 0.1f) * 1.0f, cos(timeValue * 0.4f) * 1.0f, cos(timeValue * 2.2f) * 1.0f);
+        // Rotate the cube based on mouse input
+        glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), glm::radians(rotationX), glm::vec3(1.0f, 0.0f, 0.0f));
+        rotation = glm::rotate(rotation, glm::radians(rotationY), glm::vec3(0.0f, 1.0f, 0.0f));
 
-        // Calculate the rotational speed as the difference in rotation axes
-        glm::vec3 rotationSpeed = rotationAxis - prevRotationAxis;
+        // Compute the angular velocity
+        glm::mat4 deltaRotation = rotation * glm::inverse(prevRotation);
+        glm::vec3 angularVelocity = glm::eulerAngles(glm::quat_cast(deltaRotation));
 
         // Calculate shake amplitude based on rotation speed
-        float shakeAmplitude = std::min(0.1f, 0.02f * glm::length(rotationSpeed) / (timeValue - prevTimeValue));
+        float shakeAmplitude = std::min(0.1f, shakeAmplitude * (1.0f - 3.0f * (timeValue - prevTimeValue)) + 0.1f * glm::length(angularVelocity));
         float shakeX = shakeAmplitude * glm::perlin(glm::vec3(timeValue * 80.1f, timeValue * 30.1f, timeValue * 80.4f));
         float shakeY = shakeAmplitude * glm::perlin(glm::vec3(timeValue * 70.1f, timeValue * 20.2f, timeValue * 70.5f));
         float shakeZ = shakeAmplitude * glm::perlin(glm::vec3(timeValue * 60.1f, timeValue * 52.3f, timeValue * 90.6f));
 
-        // Update the model matrix to rotate the cube
+        // Update the model matrix
         glm::mat4 translation = glm::translate(glm::mat4(1.0f), glm::vec3(shakeX, shakeY, shakeZ));
-        glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), glm::radians(timeValue * 50.0f), rotationAxis);
         glm::mat4 model = translation * rotation;
 
         glm::mat4 mvp = projection * view * model;
@@ -331,7 +363,7 @@ int main(int argc, char* argv[]) {
 
         // Update the previous time and rotation axis for the next frame
         prevTimeValue = timeValue;
-        prevRotationAxis = rotationAxis;
+        prevRotation = rotation;
     }
 
     // Cleanup
