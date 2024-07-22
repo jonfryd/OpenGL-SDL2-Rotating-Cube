@@ -48,14 +48,14 @@ const GLchar* fragmentSource = R"glsl(
         vec3 ambient = ambientStrength * lightColor;
         
         // Diffuse lighting
-        float diffStrength = 0.6;
+        float diffStrength = 0.8;
         vec3 norm = normalize(Normal);
         vec3 lightDir = normalize(lightPos - FragPos);
         float diff = max(dot(norm, lightDir), 0.0);
         vec3 diffuse = diffStrength * diff * lightColor;
 
         // Specular lighting
-        float specularStrength = 0.8;
+        float specularStrength = 0.9;
         vec3 viewDir = normalize(viewPos - FragPos);
         vec3 reflectDir = reflect(-lightDir, norm);
         float spec = pow(max(dot(viewDir, reflectDir), 0.0), 8);
