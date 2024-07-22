@@ -59,10 +59,10 @@ const GLchar* fragmentSource = R"glsl(
         diffuse += 0.06 * vec3(cos(FragPos.x + u_time * 7.2315 * FragPos.z), (sin(FragPos.z * 10 * cos(FragPos.x * u_time * 2.3))), (sin(u_time * 0.23 + FragPos.x * 1.2) * cos(FragPos.y * 0.53) * sin(FragPos.z * 2.53))) * 1.0;
 
         // Specular lighting
-        float specularStrength = 0.9;
+        float specularStrength = 1.2;
         vec3 viewDir = normalize(viewPos - FragPos);
         vec3 reflectDir = reflect(-lightDir, norm);
-        float spec = pow(max(dot(viewDir, reflectDir), 0.0), 8);
+        float spec = pow(max(dot(viewDir, reflectDir), 0.0), 16);
         vec3 specular = specularStrength * spec * lightColor;
 
         vec3 result = (ambient + diffuse) * fragColor + specular;
