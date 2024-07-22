@@ -45,3 +45,10 @@ A simple OpenGL and SDL2 project that renders a 3D rotating cube with specular l
 ## Usage
 
 Run the compiled executable to see the continuously rotating cube with specular lighting.
+
+## Controls
+
+- Space: Toggle auto-rotation
+- Escape: Quit
+
+Move the mouse to manually apply additional rotation.

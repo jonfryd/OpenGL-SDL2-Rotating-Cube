@@ -278,14 +278,18 @@ int main(int argc, char* argv[]) {
 
     // Main loop
     bool running = true;
+    bool autoRotation = true;
+
     SDL_Event event;
     while (running) {
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT || (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE)) {
                 running = false;
             }
-
-            if (event.type == SDL_MOUSEMOTION) {
+            else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_SPACE) {
+                autoRotation = !autoRotation;
+            }
+            else if (event.type == SDL_MOUSEMOTION) {
                 int mouseX = event.motion.x;
                 int mouseY = event.motion.y;
 
@@ -315,7 +319,12 @@ int main(int argc, char* argv[]) {
         std::chrono::duration<float> elapsed = currentTime - startTime;
         float timeValue = elapsed.count(); // Get the elapsed time in seconds
 
-        // Rotate the cube based on mouse input
+        // Rotate the cube based on mouse input and auto-rotation
+        if (autoRotation) {
+            rotationX += (timeValue - prevTimeValue) * 36.5 * sin(timeValue);
+            rotationY += (timeValue - prevTimeValue) * 25.0 * cos(timeValue);
+        }
+
         glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), glm::radians(rotationX), glm::vec3(1.0f, 0.0f, 0.0f));
         rotation = glm::rotate(rotation, glm::radians(rotationY), glm::vec3(0.0f, 1.0f, 0.0f));
 
