@@ -333,7 +333,7 @@ int main(int argc, char* argv[]) {
         glm::vec3 angularVelocity = glm::eulerAngles(glm::quat_cast(deltaRotation));
 
         // Calculate shake amplitude based on rotation speed
-        float shakeAmplitude = std::min(0.1f, shakeAmplitude * (1.0f - 3.0f * (timeValue - prevTimeValue)) + 0.1f * glm::length(angularVelocity));
+        float shakeAmplitude = std::min(0.1f, std::max(0.0f, shakeAmplitude * (1.0f - 3.0f * (timeValue - prevTimeValue))) + 0.1f * glm::length(angularVelocity));
         float shakeX = shakeAmplitude * glm::perlin(glm::vec3(timeValue * 80.1f, timeValue * 30.1f, timeValue * 80.4f));
         float shakeY = shakeAmplitude * glm::perlin(glm::vec3(timeValue * 70.1f, timeValue * 20.2f, timeValue * 70.5f));
         float shakeZ = shakeAmplitude * glm::perlin(glm::vec3(timeValue * 60.1f, timeValue * 52.3f, timeValue * 90.6f));
