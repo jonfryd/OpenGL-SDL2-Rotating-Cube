@@ -3,8 +3,10 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <glm/gtc/noise.hpp>
 #include <iostream>
 #include <string>
+#include <algorithm>
 
 // Vertex Shader Source
 const GLchar* vertexSource = R"glsl(
@@ -54,6 +56,8 @@ const GLchar* fragmentSource = R"glsl(
         float diff = max(dot(norm, lightDir), 0.0);
         vec3 diffuse = diffStrength * diff * lightColor;
 
+        diffuse += 0.06 * vec3(cos(FragPos.x + u_time * 7.2315 * FragPos.z), (sin(FragPos.z * 10 * cos(FragPos.x * u_time * 2.3))), (sin(u_time * 0.23 + FragPos.x * 1.2) * cos(FragPos.y * 0.53) * sin(FragPos.z * 2.53))) * 1.0;
+
         // Specular lighting
         float specularStrength = 0.9;
         vec3 viewDir = normalize(viewPos - FragPos);
@@ -63,8 +67,6 @@ const GLchar* fragmentSource = R"glsl(
 
         vec3 result = (ambient + diffuse) * fragColor + specular;
         color = vec4(0.7 * result, 1.0);
-
-        color += 0.04 * vec4(cos(FragPos.x + u_time * 7.2315 * FragPos.z), (sin(FragPos.z * 10 * cos(FragPos.x * u_time * 2.3))), (sin(u_time * 0.23 + FragPos.x * 1.2) * cos(FragPos.y * 0.53) * sin(FragPos.z * 2.53)), 0.1) * 1.0;
     }
 )glsl";
 
@@ -170,35 +172,35 @@ int main(int argc, char* argv[]) {
     // Vertices of a cube with colors and normals
     GLfloat vertices[] = {
         // Positions          // Colors            // Normals
-        -0.5f, -0.5f, -0.5f,  1.0f, 0.0f, 0.0f,   0.0f,  0.0f, -1.0f, // Red
-        0.5f, -0.5f, -0.5f,  1.0f, 0.0f, 0.0f,   0.0f,  0.0f, -1.0f, // Red
-        0.5f,  0.5f, -0.5f,  1.0f, 0.0f, 0.0f,   0.0f,  0.0f, -1.0f, // Red
-        -0.5f,  0.5f, -0.5f,  1.0f, 0.0f, 0.0f,   0.0f,  0.0f, -1.0f, // Red
+        -0.5f, -0.5f, -0.5f,  1.0f, 0.2f, 0.2f,   0.0f,  0.0f, -1.0f, // Red
+        0.5f, -0.5f, -0.5f,  1.0f, 0.2f, 0.2f,   0.0f,  0.0f, -1.0f, // Red
+        0.5f,  0.5f, -0.5f,  1.0f, 0.2f, 0.2f,   0.0f,  0.0f, -1.0f, // Red
+        -0.5f,  0.5f, -0.5f,  1.0f, 0.2f, 0.2f,   0.0f,  0.0f, -1.0f, // Red
 
-        -0.5f, -0.5f,  0.5f,  0.0f, 1.0f, 0.0f,   0.0f,  0.0f,  1.0f, // Green
-        0.5f, -0.5f,  0.5f,  0.0f, 1.0f, 0.0f,   0.0f,  0.0f,  1.0f, // Green
-        0.5f,  0.5f,  0.5f,  0.0f, 1.0f, 0.0f,   0.0f,  0.0f,  1.0f, // Green
-        -0.5f,  0.5f,  0.5f,  0.0f, 1.0f, 0.0f,   0.0f,  0.0f,  1.0f, // Green
+        -0.5f, -0.5f,  0.5f,  0.2f, 1.0f, 0.2f,   0.0f,  0.0f,  1.0f, // Green
+        0.5f, -0.5f,  0.5f,  0.2f, 1.0f, 0.2f,   0.0f,  0.0f,  1.0f, // Green
+        0.5f,  0.5f,  0.5f,  0.2f, 1.0f, 0.2f,   0.0f,  0.0f,  1.0f, // Green
+        -0.5f,  0.5f,  0.5f,  0.2f, 1.0f, 0.2f,   0.0f,  0.0f,  1.0f, // Green
 
-        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f, 1.0f,  -1.0f,  0.0f,  0.0f, // Blue
-        -0.5f,  0.5f, -0.5f,  0.0f, 0.0f, 1.0f,  -1.0f,  0.0f,  0.0f, // Blue
-        -0.5f,  0.5f,  0.5f,  0.0f, 0.0f, 1.0f,  -1.0f,  0.0f,  0.0f, // Blue
-        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f, 1.0f,  -1.0f,  0.0f,  0.0f, // Blue
+        -0.5f, -0.5f, -0.5f,  0.2f, 0.2f, 1.0f,  -1.0f,  0.0f,  0.0f, // Blue
+        -0.5f,  0.5f, -0.5f,  0.2f, 0.2f, 1.0f,  -1.0f,  0.0f,  0.0f, // Blue
+        -0.5f,  0.5f,  0.5f,  0.2f, 0.2f, 1.0f,  -1.0f,  0.0f,  0.0f, // Blue
+        -0.5f, -0.5f,  0.5f,  0.2f, 0.2f, 1.0f,  -1.0f,  0.0f,  0.0f, // Blue
 
-        0.5f, -0.5f, -0.5f,  1.0f, 1.0f, 0.0f,   1.0f,  0.0f,  0.0f, // Yellow
-        0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 0.0f,   1.0f,  0.0f,  0.0f, // Yellow
-        0.5f,  0.5f,  0.5f,  1.0f, 1.0f, 0.0f,   1.0f,  0.0f,  0.0f, // Yellow
-        0.5f, -0.5f,  0.5f,  1.0f, 1.0f, 0.0f,   1.0f,  0.0f,  0.0f, // Yellow
+        0.5f, -0.5f, -0.5f,  1.0f, 1.0f, 0.2f,   1.0f,  0.0f,  0.0f, // Yellow
+        0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 0.2f,   1.0f,  0.0f,  0.0f, // Yellow
+        0.5f,  0.5f,  0.5f,  1.0f, 1.0f, 0.2f,   1.0f,  0.0f,  0.0f, // Yellow
+        0.5f, -0.5f,  0.5f,  1.0f, 1.0f, 0.2f,   1.0f,  0.0f,  0.0f, // Yellow
 
-        -0.5f, -0.5f, -0.5f,  1.0f, 0.0f, 1.0f,   0.0f, -1.0f,  0.0f, // Magenta
-        0.5f, -0.5f, -0.5f,  1.0f, 0.0f, 1.0f,   0.0f, -1.0f,  0.0f, // Magenta
-        0.5f, -0.5f,  0.5f,  1.0f, 0.0f, 1.0f,   0.0f, -1.0f,  0.0f, // Magenta
-        -0.5f, -0.5f,  0.5f,  1.0f, 0.0f, 1.0f,   0.0f, -1.0f,  0.0f, // Magenta
+        -0.5f, -0.5f, -0.5f,  1.0f, 0.2f, 1.0f,   0.0f, -1.0f,  0.0f, // Magenta
+        0.5f, -0.5f, -0.5f,  1.0f, 0.2f, 1.0f,   0.0f, -1.0f,  0.0f, // Magenta
+        0.5f, -0.5f,  0.5f,  1.0f, 0.2f, 1.0f,   0.0f, -1.0f,  0.0f, // Magenta
+        -0.5f, -0.5f,  0.5f,  1.0f, 0.2f, 1.0f,   0.0f, -1.0f,  0.0f, // Magenta
 
-        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f, 1.0f,   0.0f,  1.0f,  0.0f, // Cyan
-        0.5f,  0.5f, -0.5f,  0.0f, 1.0f, 1.0f,   0.0f,  1.0f,  0.0f, // Cyan
-        0.5f,  0.5f,  0.5f,  0.0f, 1.0f, 1.0f,   0.0f,  1.0f,  0.0f, // Cyan
-        -0.5f,  0.5f,  0.5f,  0.0f, 1.0f, 1.0f,   0.0f,  1.0f,  0.0f  // Cyan
+        -0.5f,  0.5f, -0.5f,  0.2f, 1.0f, 1.0f,   0.0f,  1.0f,  0.0f, // Cyan
+        0.5f,  0.5f, -0.5f,  0.2f, 1.0f, 1.0f,   0.0f,  1.0f,  0.0f, // Cyan
+        0.5f,  0.5f,  0.5f,  0.2f, 1.0f, 1.0f,   0.0f,  1.0f,  0.0f, // Cyan
+        -0.5f,  0.5f,  0.5f,  0.2f, 1.0f, 1.0f,   0.0f,  1.0f,  0.0f  // Cyan
     };
 
     GLuint indices[] = {
@@ -264,6 +266,9 @@ int main(int argc, char* argv[]) {
 
     auto startTime = std::chrono::high_resolution_clock::now();
 
+    float prevTimeValue = 0.0f;
+    glm::vec3 prevRotationAxis(sin(prevTimeValue * 0.1f) * 1.0f, cos(prevTimeValue * 0.4f) * 1.0f, cos(prevTimeValue * 2.2f) * 1.0f);
+
     // Main loop
     bool running = true;
     SDL_Event event;
@@ -279,8 +284,26 @@ int main(int argc, char* argv[]) {
         std::chrono::duration<float> elapsed = currentTime - startTime;
         float timeValue = elapsed.count(); // Get the elapsed time in seconds
 
+        // Calculate the current rotation axis
+        glm::vec3 rotationAxis(sin(timeValue * 0.1f) * 1.0f, cos(timeValue * 0.4f) * 1.0f, cos(timeValue * 2.2f) * 1.0f);
+
+        // Calculate the rotational speed as the difference in rotation axes
+        glm::vec3 rotationSpeed = rotationAxis - prevRotationAxis;
+
+        // Calculate shake amplitude based on rotation speed
+        float shakeAmplitude = std::min(0.1f, 40.0f * glm::length(rotationSpeed)); // Adjust the amplitude for the desired shake effect
+        //float shakeX = shakeAmplitude * sin(timeValue * 110.33) * glm::length(rotationSpeed);
+        //float shakeY = shakeAmplitude * cos(timeValue * 101.91) * glm::length(rotationSpeed);
+        //float shakeZ = shakeAmplitude * sin(timeValue * 123.451) * glm::length(rotationSpeed);
+        float shakeX = shakeAmplitude * glm::perlin(glm::vec3(timeValue * 80.1f, timeValue * 30.1f, timeValue * 80.4f));
+        float shakeY = shakeAmplitude * glm::perlin(glm::vec3(timeValue * 70.1f, timeValue * 20.2f, timeValue * 70.5f));
+        float shakeZ = shakeAmplitude * glm::perlin(glm::vec3(timeValue * 60.1f, timeValue * 52.3f, timeValue * 90.6f));
+
         // Update the model matrix to rotate the cube
-        model = glm::rotate(glm::mat4(1.0f), glm::radians(timeValue * 50.0f), glm::vec3(sin(timeValue * 0.1) * 1.0f, cos(timeValue * 0.4) * 1.0f, cos(timeValue * 2.2) * 1.0f));
+        glm::mat4 translation = glm::translate(glm::mat4(1.0f), glm::vec3(shakeX, shakeY, shakeZ));
+        glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), glm::radians(timeValue * 50.0f), rotationAxis);
+        glm::mat4 model = translation * rotation;
+
         glm::mat4 mvp = projection * view * model;
         glm::mat3 normalMatrix = glm::transpose(glm::inverse(glm::mat3(model)));
 
@@ -308,6 +331,10 @@ int main(int argc, char* argv[]) {
 
         // Swap buffers
         SDL_GL_SwapWindow(window);
+
+        // Update the previous time and rotation axis for the next frame
+        prevTimeValue = timeValue;
+        prevRotationAxis = rotationAxis;
     }
 
     // Cleanup
