@@ -15,7 +15,7 @@ A simple OpenGL and SDL2 project that renders a 3D rotating cube with specular l
 ## Installation
 
 1. **Install Dependencies**:
-    - On macOS:
+    - On macOS (Homebrew):
         ```sh
         brew install sdl2 glew glm
         ```
@@ -30,12 +30,17 @@ A simple OpenGL and SDL2 project that renders a 3D rotating cube with specular l
     cd OpenGL-SDL2-Rotating-Cube
     ```
 
-## Building the Project on macOS
+## Building the Project
 
-1. **Compile the Project in a Homebrew environment**:
-    ```sh
-    g++ -o rotating_cube rotating_cube.cpp -I$HOMEBREW_PREFIX/include/ -L$HOMEBREW_PREFIX/lib/ -lSDL2 -lGLEW -framework OpenGL -std=c++11
-    ```
+1. **Compile the Project**:
+    - On macOS (Homebrew):
+        ```sh
+        g++ -o rotating_cube rotating_cube.cpp -I$HOMEBREW_PREFIX/include/ -L$HOMEBREW_PREFIX/lib/ -lSDL2 -lGLEW -framework OpenGL -std=c++11
+        ```
+    - On Linux (Ubuntu):
+        ```sh
+        g++ -o rotating_cube rotating_cube.cpp -lSDL2 -lGLEW -lGL -std=c++11
+        ```
 
 2. **Run the Executable**:
     ```sh
