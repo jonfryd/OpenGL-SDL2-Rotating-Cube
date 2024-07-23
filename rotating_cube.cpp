@@ -159,6 +159,8 @@ int main(int argc, char* argv[]) {
         return -1;
     }
 
+    std::cout << "OpenGL version supported by this platform: " << glGetString(GL_VERSION) << std::endl;
+
     // Initialize GLEW
     glewExperimental = GL_TRUE;
     GLenum err = glewInit();
