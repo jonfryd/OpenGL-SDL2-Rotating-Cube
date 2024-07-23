@@ -7,6 +7,7 @@
 #include <iostream>
 #include <string>
 #include <algorithm>
+#include <thread>
 
 // Vertex Shader Source
 const GLchar* vertexSource = R"glsl(
