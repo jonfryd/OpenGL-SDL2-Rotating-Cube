@@ -1,6 +1,6 @@
 # OpenGL-SDL2-Rotating-Cube
 
-A simple OpenGL and SDL2 project that renders a 3D rotating cube with specular lighting. Each face of the cube is uniquely colored, and the cube rotates continuously, demonstrating basic 3D graphics techniques including transformations, lighting, and fragment shading.
+A simple OpenGL and SDL2 project that renders a 3D rotating cube with specular lighting and Perlin noise bump mapping. Each face of the cube is uniquely colored, and the cube rotates continuously, demonstrating basic 3D graphics techniques including transformations, lighting, and fragment shading.
 
 https://github.com/user-attachments/assets/3f0de0ce-1cf0-4513-a1eb-30e1e7e4c9d8
 
@@ -44,7 +44,7 @@ https://github.com/user-attachments/assets/3f0de0ce-1cf0-4513-a1eb-30e1e7e4c9d8
 
 ## Usage
 
-Run the compiled executable to see the continuously rotating cube with specular lighting.
+Run the compiled executable to see the continuously rotating cube.
 
 ## Controls
 
