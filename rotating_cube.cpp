@@ -132,8 +132,10 @@ const GLchar* fragmentSource = R"glsl(
     void main() {
         // Bump mapping using Perlin noise
         float bumpHeight = 0.06;
-        float n = abs(cnoise(FragPos * 20.0) - cnoise(FragPos * 10.0));
-        vec3 bumpedNormal = Normal + n * bumpHeight;
+        float nx = abs(cnoise(FragPos * 20.0) - cnoise(FragPos * 10.0));
+        float ny = abs(cnoise(FragPos * 24.28) - cnoise(FragPos * 12.14));
+        float nz = abs(cnoise(FragPos * 25.3) - cnoise(FragPos * 12.65));
+        vec3 bumpedNormal = Normal + vec3(nx, ny, nz) * bumpHeight;
 
         // Ambient lighting
         float ambientStrength = 0.15;
