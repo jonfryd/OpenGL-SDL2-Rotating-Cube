@@ -33,14 +33,11 @@ A simple OpenGL and SDL2 project that renders a 3D rotating cube with specular l
 ## Building the Project
 
 1. **Compile the Project**:
-    - On macOS (Homebrew):
-        ```sh
-        g++ -o rotating_cube rotating_cube.cpp -I$HOMEBREW_PREFIX/include/ -L$HOMEBREW_PREFIX/lib/ -lSDL2 -lGLEW -framework OpenGL -std=c++11
-        ```
-    - On Linux:
-        ```sh
-        g++ -o rotating_cube rotating_cube.cpp -lSDL2 -lGLEW -lGL -std=c++11
-        ```
+    Simply run `make` in the project directory. The `Makefile` will automatically detect your operating system and use the appropriate commands.
+
+    ```sh
+    make
+    ```
 
 2. **Run the Executable**:
     ```sh
