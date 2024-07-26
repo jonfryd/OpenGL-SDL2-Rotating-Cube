@@ -2,9 +2,7 @@
 
 A simple OpenGL and SDL2 project that renders a 3D rotating cube with specular lighting. Each face of the cube is uniquely colored, and the cube rotates continuously, demonstrating basic 3D graphics techniques including transformations, lighting, and fragment shading.
 
-## Screenshot
-
-<img width="752" alt="Screenshot 2024-07-22 at 11 01 59" src="https://github.com/user-attachments/assets/dc2c9802-411f-4bee-8e44-96001346708a">
+https://github.com/user-attachments/assets/6003e685-5853-49a0-8ad6-8d329cae699d
 
 ## Prerequisites
 
