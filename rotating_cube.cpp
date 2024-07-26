@@ -366,6 +366,7 @@ int main(int argc, char* argv[]) {
 
     float rotationX = 0.0f;
     float rotationY = 0.0f;
+    float rotationZ = 0.0f;
     int lastMouseX, lastMouseY;
     bool firstMouse = true;
 
@@ -424,10 +425,12 @@ int main(int argc, char* argv[]) {
         if (autoRotation) {
             rotationX += (timeValue - prevTimeValue) * 36.5 * sin(timeValue);
             rotationY += (timeValue - prevTimeValue) * 25.0 * cos(timeValue);
+            rotationZ += (timeValue - prevTimeValue) * 5.21;
         }
 
         glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), glm::radians(rotationX), glm::vec3(1.0f, 0.0f, 0.0f));
         rotation = glm::rotate(rotation, glm::radians(rotationY), glm::vec3(0.0f, 1.0f, 0.0f));
+        rotation = glm::rotate(rotation, glm::radians(rotationZ), glm::vec3(0.0f, 0.0f, 1.0f));
 
         // Compute the angular velocity
         glm::mat4 deltaRotation = rotation * glm::inverse(prevRotation);
