@@ -424,7 +424,7 @@ int main(int argc, char* argv[]) {
         // Rotate the cube based on mouse input and auto-rotation
         if (autoRotation) {
             rotationX += (timeValue - prevTimeValue) * 36.5 * sin(timeValue);
-            rotationY += (timeValue - prevTimeValue) * 25.0 * cos(timeValue);
+            rotationY += (timeValue - prevTimeValue) * 13.43;
             rotationZ += (timeValue - prevTimeValue) * 5.21;
         }
 
