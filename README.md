@@ -52,3 +52,7 @@ Run the compiled executable to see the continuously rotating cube.
 - Escape: Quit
 
 Move the mouse to manually apply additional rotation.
+
+## Credits
+
+Created by Jon Frydensbjerg (email: jon@pixop.com) with plenty of support from ChatGPT. 
